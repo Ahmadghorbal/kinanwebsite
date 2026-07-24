@@ -1,0 +1,277 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * Design tokens — an "Apple-system" translation.
+ * Light values on :root; dark values follow the OS unless the user has
+ * explicitly forced a theme via [data-theme] (set by the theme toggle).
+ * ------------------------------------------------------------------ */
+:root {
+  --background: #fbfbfd;
+  --surface: #ffffff;
+  --surface-2: #f5f5f7;
+  --ink: #1d1d1f;
+  --ink-secondary: #6e6e73;
+  --ink-tertiary: #86868b;
+  --line: #d2d2d7;
+  --line-soft: rgba(0, 0, 0, 0.08);
+  --accent: #157a5b;
+  --accent-hover: #0f5f47;
+  --accent-contrast: #ffffff;
+  --nav-bg: rgba(251, 251, 253, 0.72);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.06), 0 16px 40px rgba(0, 0, 0, 0.1);
+
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
+
+  --font-arabic: var(--font-plex-arabic), "Segoe UI", Tahoma, sans-serif;
+  --font-latin: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #000000;
+    --surface: #1d1d1f;
+    --surface-2: #161617;
+    --ink: #f5f5f7;
+    --ink-secondary: #a1a1a6;
+    --ink-tertiary: #86868b;
+    --line: #3a3a3c;
+    --line-soft: rgba(255, 255, 255, 0.1);
+    --accent: #2fb489;
+    --accent-hover: #43c99d;
+    --accent-contrast: #04120d;
+    --nav-bg: rgba(0, 0, 0, 0.68);
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
+    --shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.4), 0 18px 44px rgba(0, 0, 0, 0.6);
+  }
+}
+
+:root[data-theme="dark"] {
+  --background: #000000;
+  --surface: #1d1d1f;
+  --surface-2: #161617;
+  --ink: #f5f5f7;
+  --ink-secondary: #a1a1a6;
+  --ink-tertiary: #86868b;
+  --line: #3a3a3c;
+  --line-soft: rgba(255, 255, 255, 0.1);
+  --accent: #2fb489;
+  --accent-hover: #43c99d;
+  --accent-contrast: #04120d;
+  --nav-bg: rgba(0, 0, 0, 0.68);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.4), 0 18px 44px rgba(0, 0, 0, 0.6);
+}
+
+/* Expose tokens to Tailwind's utility layer (bg-surface, text-ink, …). */
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-tertiary: var(--ink-tertiary);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-contrast: var(--accent-contrast);
+
+  --radius-sm: var(--radius-sm);
+  --radius-card: var(--radius);
+  --radius-lg: var(--radius-lg);
+
+  --font-sans: var(--font-latin);
+  --font-arabic: var(--font-arabic);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-hover: var(--shadow-hover);
+
+  --container-content: 60rem;
+  --container-wide: 71rem;
+}
+
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+* {
+  border-color: var(--line);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--ink);
+  font-family: var(--font-latin);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+
+/* Arabic locale → Arabic typeface + comfortable RTL leading. */
+html[lang="ar"] body {
+  font-family: var(--font-arabic);
+  line-height: 1.85;
+}
+
+h1, h2, h3, h4 {
+  color: var(--ink);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] h4 {
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Refined scrollbar (WebKit) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  border: 3px solid var(--background);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--ink) 34%, transparent);
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion — subtle scroll reveal, disabled under reduced-motion.
+ * ------------------------------------------------------------------ */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Component primitives
+ * ------------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  white-space: nowrap;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.btn-secondary:hover {
+  border-color: var(--ink-tertiary);
+  background: var(--surface-2);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.section {
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Long-form article typography */
+.prose p {
+  color: var(--ink-secondary);
+  margin-block: 0 1.25rem;
+  font-size: 1.075rem;
+}
+.prose h3 {
+  color: var(--ink);
+  font-size: 1.35rem;
+  margin-block: 2.25rem 0.9rem;
+}
+.prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+html[lang="ar"] .prose p {
+  font-size: 1.15rem;
+}

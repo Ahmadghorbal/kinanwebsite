@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "siteName": "Kinan al-Nahhas",
+    "defaultTitle": "Kinan al-Nahhas | Member of Parliament for Homs",
+    "titleTemplate": "%s | Kinan al-Nahhas",
+    "description": "The official site of Kinan al-Nahhas, member of Syria's People's Assembly for the city of Homs. Articles and positions on transitional justice, the permanent constitution, and building the new Syria."
+  },
+  "nav": {
+    "about": "About",
+    "articles": "Articles",
+    "survey": "Survey",
+    "contact": "Contact",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "theme": {
+    "toLight": "Light mode",
+    "toDark": "Dark mode",
+    "label": "Toggle theme"
+  },
+  "language": {
+    "label": "Language",
+    "arabic": "العربية",
+    "english": "English",
+    "switchToEnglish": "العربية"
+  },
+  "hero": {
+    "role": "Member of Syria's People's Assembly for the city of Homs",
+    "tagline": "A voice from Homs in the first People's Assembly after the fall of Assad — working for genuine transitional justice, a permanent constitution that represents all Syrians, and institutions that serve the citizen.",
+    "readBio": "Read the bio",
+    "contact": "Get in touch"
+  },
+  "about": {
+    "heading": "About",
+    "districtLabel": "Electoral district",
+    "roleLabel": "Role",
+    "filesLabel": "Key priorities",
+    "followFacebook": "Facebook",
+    "followX": "X (Twitter)"
+  },
+  "articles": {
+    "heading": "Articles",
+    "subtitle": "Articles and opinion pieces by Kinan al-Nahhas.",
+    "latestHeading": "Latest articles",
+    "readMore": "Read article",
+    "backToArticles": "Back to articles",
+    "publishedOn": "Published",
+    "sourcePrefix": "This article was first published in",
+    "empty": "No articles published yet."
+  },
+  "survey": {
+    "heading": "Survey",
+    "subtitle": "Share your view: which priority should the People's Assembly take up next?",
+    "vote": "Vote now",
+    "voting": "Submitting…",
+    "resultsHeading": "Survey results",
+    "totalVotes": "Total votes: {count}",
+    "thanks": "Thanks for taking part! Here are the results so far.",
+    "alreadyVoted": "You have already voted. Here are the results so far.",
+    "error": "We couldn't record your vote. Please try again later.",
+    "selectPrompt": "Please choose one of the options."
+  },
+  "contact": {
+    "heading": "Contact",
+    "subtitle": "Have a general message or a word of appreciation? Choose the message type and fill in the form.",
+    "typeLegend": "Message type",
+    "typeCommunication": "Communication",
+    "typeCompliment": "Compliment",
+    "name": "Full name",
+    "email": "Email address",
+    "phone": "Phone number (optional)",
+    "message": "Message",
+    "send": "Send",
+    "sending": "Sending…",
+    "success": "Your message has been received. Thank you for reaching out.",
+    "error": "We couldn't send your message. Please try again.",
+    "required": "Please fill in all required fields.",
+    "invalidEmail": "Please enter a valid email address."
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "role": "Member of Parliament for the city of Homs",
+    "nav": "Links",
+    "follow": "Follow"
+  },
+  "notFound": {
+    "heading": "Page not found",
+    "body": "Sorry, the page you are looking for is not available.",
+    "home": "Back to home"
+  }
+}
