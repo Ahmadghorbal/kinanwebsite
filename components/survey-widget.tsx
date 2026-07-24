@@ -177,9 +177,7 @@ export function SurveyWidget({ survey }: { survey: SurveyData }) {
       </fieldset>
 
       {status === "error" && (
-        <p className="mt-4 text-sm text-red-600 dark:text-red-400">
-          {t("error")}
-        </p>
+        <p className="mt-4 text-sm text-danger">{t("error")}</p>
       )}
 
       <button

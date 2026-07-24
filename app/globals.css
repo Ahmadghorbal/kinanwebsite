@@ -20,6 +20,7 @@
   --accent: #428177;
   --accent-hover: #054239;
   --accent-contrast: #ffffff;
+  --danger: #b3261e;
   --nav-bg: rgba(253, 252, 250, 0.72);
   --shadow-card: 0 1px 2px rgba(22, 22, 22, 0.04), 0 8px 24px rgba(22, 22, 22, 0.06);
   --shadow-hover: 0 2px 6px rgba(22, 22, 22, 0.06), 0 16px 40px rgba(22, 22, 22, 0.1);
@@ -46,6 +47,7 @@
     --accent: #5fa392;
     --accent-hover: #7ab8a8;
     --accent-contrast: #08120f;
+    --danger: #f0857d;
     --nav-bg: rgba(22, 22, 22, 0.7);
     --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
     --shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.4), 0 18px 44px rgba(0, 0, 0, 0.6);
@@ -64,6 +66,7 @@
   --accent: #5fa392;
   --accent-hover: #7ab8a8;
   --accent-contrast: #08120f;
+  --danger: #f0857d;
   --nav-bg: rgba(22, 22, 22, 0.7);
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
   --shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.4), 0 18px 44px rgba(0, 0, 0, 0.6);
@@ -81,6 +84,7 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-contrast: var(--accent-contrast);
+  --color-danger: var(--danger);
 
   --radius-sm: var(--radius-sm);
   --radius-card: var(--radius);

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isSanityConfigured } from "@/sanity/env";
+import { isSanityWriteConfigured } from "@/sanity/env";
 import { writeClient } from "@/sanity/lib/client";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "too_long" }, { status: 400 });
   }
 
-  if (isSanityConfigured) {
+  if (isSanityWriteConfigured) {
     try {
       await writeClient.create({
         _type: "contactSubmission",
@@ -43,14 +43,16 @@ export async function POST(request: Request) {
         message,
         createdAt: new Date().toISOString(),
       });
-      return NextResponse.json({ ok: true });
+      return NextResponse.json({ ok: true, persisted: true });
     } catch {
       return NextResponse.json({ error: "store_failed" }, { status: 502 });
     }
   }
 
-  // No CMS connected yet: accept so the UX works end-to-end in the demo.
-  console.info("[contact] submission (not persisted — Sanity not configured):", {
+  // No write token configured yet: accept so the UX works end-to-end. A project
+  // ID alone can't persist writes (that needs SANITY_API_WRITE_TOKEN), so we must
+  // not attempt a write that would fail and 502 the visitor. See DEPLOY.md.
+  console.info("[contact] submission (not persisted — no Sanity write token):", {
     type,
     name,
     email,
