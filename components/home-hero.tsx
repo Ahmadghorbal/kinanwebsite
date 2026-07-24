@@ -57,6 +57,13 @@ export async function HomeHero() {
           )}
 
           <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-xs font-semibold text-ink-secondary">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/flag-syria.svg"
+              alt=""
+              aria-hidden="true"
+              className="h-2.5 w-auto rounded-[1px] shadow-sm"
+            />
             <VerifiedIcon />
             {t("official")}
           </span>
