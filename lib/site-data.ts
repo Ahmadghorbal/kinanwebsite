@@ -17,7 +17,7 @@ export interface SiteData {
   role: string;
   tagline: string;
   bio: string[];
-  socials: { facebook: string; x: string };
+  socials: { facebook: string; x: string; telegram: string };
   contactEmail: string;
   photo?: string;
 }

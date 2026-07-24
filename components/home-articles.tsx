@@ -32,7 +32,7 @@ export async function HomeArticles() {
             </Link>
           </div>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          <div className="mt-10 flex flex-col gap-5">
             {articles.map((article) => (
               <ArticleCard
                 key={article.slug}

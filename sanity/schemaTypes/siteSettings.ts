@@ -35,6 +35,7 @@ export const siteSettings = defineType({
       fields: [
         { name: "facebook", title: "Facebook", type: "url" },
         { name: "x", title: "X (Twitter)", type: "url" },
+        { name: "telegram", title: "Telegram", type: "url" },
       ],
     }),
     defineField({ name: "contactEmail", title: "Contact email", type: "string" }),

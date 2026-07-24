@@ -2,7 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { getSiteData } from "@/lib/site-data";
 import type { Locale } from "@/lib/content";
 import { Link } from "@/i18n/navigation";
-import { FacebookIcon, XIcon } from "./icons";
+import { FacebookIcon, XIcon, TelegramIcon } from "./icons";
 
 export async function SiteFooter() {
   const locale = (await getLocale()) as Locale;
@@ -63,6 +63,15 @@ export async function SiteFooter() {
           >
             <XIcon className="h-[15px] w-[15px]" />
             {about("followX")}
+          </a>
+          <a
+            href={data.socials.telegram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm text-ink-secondary transition-colors hover:text-ink"
+          >
+            <TelegramIcon className="h-4 w-4" />
+            {about("followTelegram")}
           </a>
         </div>
       </div>

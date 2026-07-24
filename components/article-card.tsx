@@ -15,21 +15,23 @@ export function ArticleCard({
   return (
     <Link
       href={`/articles/${article.slug}`}
-      className="card group flex flex-col p-8 transition-shadow duration-300 hover:shadow-[var(--shadow-hover)] sm:p-9"
+      className="card group flex flex-col gap-5 p-8 transition-shadow duration-300 hover:shadow-[var(--shadow-hover)] sm:flex-row sm:items-center sm:justify-between"
     >
-      <time
-        dateTime={article.publishedAt}
-        className="text-sm text-ink-tertiary"
-      >
-        {formatDate(article.publishedAt, locale)}
-      </time>
-      <h3 className="mt-3 text-2xl font-semibold leading-snug text-ink transition-colors group-hover:text-accent">
-        {article.title}
-      </h3>
-      <p className="mt-3 text-[17px] leading-relaxed text-ink-secondary">
-        {article.dek}
-      </p>
-      <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
+      <div>
+        <time
+          dateTime={article.publishedAt}
+          className="text-sm text-ink-tertiary"
+        >
+          {formatDate(article.publishedAt, locale)}
+        </time>
+        <h3 className="mt-2 text-2xl font-semibold leading-snug text-ink transition-colors group-hover:text-accent">
+          {article.title}
+        </h3>
+        <p className="mt-2 max-w-2xl text-[17px] leading-relaxed text-ink-secondary">
+          {article.dek}
+        </p>
+      </div>
+      <span className="inline-flex shrink-0 items-center gap-1.5 self-start text-sm font-semibold text-accent sm:self-auto">
         {readMoreLabel} <span aria-hidden>{arrow}</span>
       </span>
     </Link>

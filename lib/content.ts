@@ -49,7 +49,7 @@ export interface SiteContent {
   tagline: Localized;
   bio: Localized[];
   photo?: string;
-  socials: { facebook: string; x: string };
+  socials: { facebook: string; x: string; telegram: string };
   contactEmail: string;
   surveys: Survey[];
   articles: Article[];
@@ -84,6 +84,7 @@ export const siteContent: SiteContent = {
   socials: {
     facebook: "https://www.facebook.com/kinan.nahhas",
     x: "https://x.com/kinan_nahhas",
+    telegram: "https://t.me/KinanNahhas",
   },
   contactEmail: "",
   surveys: [

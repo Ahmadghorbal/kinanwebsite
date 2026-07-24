@@ -23,3 +23,16 @@ export function XIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+export function TelegramIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M21.5 4.5 18.9 19.2c-.2 1-.8 1.24-1.62.77l-4.48-3.3-2.16 2.08c-.24.24-.44.44-.9.44l.32-4.56 8.3-7.5c.36-.32-.08-.5-.56-.18L7.02 12.7l-4.5-1.4c-.98-.3-1-.98.2-1.46l17.6-6.78c.82-.3 1.54.2 1.18 1.44Z" />
+    </svg>
+  );
+}
