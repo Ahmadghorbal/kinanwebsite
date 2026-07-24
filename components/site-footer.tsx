@@ -2,6 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { getSiteData } from "@/lib/site-data";
 import type { Locale } from "@/lib/content";
 import { Link } from "@/i18n/navigation";
+import { FacebookIcon, XIcon } from "./icons";
 
 export async function SiteFooter() {
   const locale = (await getLocale()) as Locale;
@@ -49,16 +50,18 @@ export async function SiteFooter() {
             href={data.socials.facebook}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-ink-secondary transition-colors hover:text-ink"
+            className="inline-flex items-center gap-2 text-sm text-ink-secondary transition-colors hover:text-ink"
           >
+            <FacebookIcon className="h-4 w-4" />
             {about("followFacebook")}
           </a>
           <a
             href={data.socials.x}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-ink-secondary transition-colors hover:text-ink"
+            className="inline-flex items-center gap-2 text-sm text-ink-secondary transition-colors hover:text-ink"
           >
+            <XIcon className="h-[15px] w-[15px]" />
             {about("followX")}
           </a>
         </div>

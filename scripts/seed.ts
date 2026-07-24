@@ -60,18 +60,20 @@ async function run() {
     });
   }
 
-  docs.push({
-    _id: `survey-${siteContent.survey.id}`,
-    _type: "survey",
-    surveyId: siteContent.survey.id,
-    question: lstr(siteContent.survey.question),
-    options: siteContent.survey.options.map((o) => ({
-      _key: key(),
-      id: o.id,
-      label: lstr(o.label),
-    })),
-    isActive: true,
-  });
+  for (const s of siteContent.surveys) {
+    docs.push({
+      _id: `survey-${s.id}`,
+      _type: "survey",
+      surveyId: s.id,
+      question: lstr(s.question),
+      options: s.options.map((o) => ({
+        _key: key(),
+        id: o.id,
+        label: lstr(o.label),
+      })),
+      isActive: true,
+    });
+  }
 
   for (const i of siteContent.interviews) {
     docs.push({
@@ -87,9 +89,6 @@ async function run() {
   for (const d of docs) tx.createOrReplace(d);
   await tx.commit();
   console.log(`Seeded ${docs.length} documents into Sanity.`);
-  console.log(
-    "Note: article cover images aren't seeded automatically — upload them in Studio (they live in public/images/articles/ for the site's own fallback rendering).",
-  );
 }
 
 run().catch((err) => {

@@ -3,7 +3,8 @@
  * the static fallback (used when no Sanity project is connected) and as the basis
  * for the Sanity seed data. Bio facts are from public reporting; article summaries
  * are original paraphrases of the author's own published pieces (see DEPLOY.md for
- * provenance) — full text lives at the linked source, which every article credits.
+ * provenance) — full text lives at the linked source, which every article credits
+ * prominently as the place of first publication.
  */
 
 export type Locale = "ar" | "en";
@@ -20,7 +21,6 @@ export interface Article {
   dek: Localized;
   publishedAt: string; // ISO date
   source: ArticleSource;
-  coverImage?: string;
   /** Short original summary paragraphs (not a reproduction of the source text). */
   summary: Localized[];
 }
@@ -51,7 +51,7 @@ export interface SiteContent {
   photo?: string;
   socials: { facebook: string; x: string };
   contactEmail: string;
-  survey: Survey;
+  surveys: Survey[];
   articles: Article[];
   interviews: Interview[];
 }
@@ -86,36 +86,65 @@ export const siteContent: SiteContent = {
     x: "https://x.com/kinan_nahhas",
   },
   contactEmail: "",
-  survey: {
-    id: "priorities-2026",
-    question: {
-      ar: "ما الملف الذي تراه الأولوية القادمة لمجلس الشعب؟",
-      en: "Which priority should the People's Assembly take up next?",
+  surveys: [
+    {
+      id: "priorities-2026",
+      question: {
+        ar: "ما الملف الذي تراه الأولوية القادمة لمجلس الشعب؟",
+        en: "Which priority should the People's Assembly take up next?",
+      },
+      options: [
+        {
+          id: "transitional-justice",
+          label: { ar: "العدالة الانتقالية", en: "Transitional justice" },
+        },
+        {
+          id: "constitution",
+          label: { ar: "الدستور الدائم", en: "Permanent constitution" },
+        },
+        {
+          id: "judiciary",
+          label: { ar: "إصلاح القضاء", en: "Judicial reform" },
+        },
+        {
+          id: "economy",
+          label: {
+            ar: "الاقتصاد وإعادة الإعمار",
+            en: "Economy & reconstruction",
+          },
+        },
+        {
+          id: "education",
+          label: { ar: "التعليم والثقافة", en: "Education & culture" },
+        },
+        {
+          id: "oversight",
+          label: { ar: "الرقابة على المؤسسات", en: "Institutional oversight" },
+        },
+      ],
     },
-    options: [
-      {
-        id: "transitional-justice",
-        label: { ar: "العدالة الانتقالية", en: "Transitional justice" },
+    {
+      id: "lebanon-2026",
+      question: {
+        ar: "هل تؤيد انخراط سوريا في ملف لبنان اليوم؟",
+        en: "Do you support Syria's involvement in the Lebanon file today?",
       },
-      {
-        id: "constitution",
-        label: { ar: "الدستور الدائم", en: "Permanent constitution" },
-      },
-      { id: "judiciary", label: { ar: "إصلاح القضاء", en: "Judicial reform" } },
-      {
-        id: "economy",
-        label: { ar: "الاقتصاد وإعادة الإعمار", en: "Economy & reconstruction" },
-      },
-      {
-        id: "education",
-        label: { ar: "التعليم والثقافة", en: "Education & culture" },
-      },
-      {
-        id: "oversight",
-        label: { ar: "الرقابة على المؤسسات", en: "Institutional oversight" },
-      },
-    ],
-  },
+      options: [
+        {
+          id: "support",
+          label: { ar: "نعم، بشروط واضحة", en: "Yes, with clear conditions" },
+        },
+        {
+          id: "oppose",
+          label: { ar: "لا، الأولوية للداخل", en: "No, focus on the home front" },
+        },
+        {
+          id: "unsure",
+          label: { ar: "غير متأكد", en: "Not sure" },
+        },
+      ],
+    },
+  ],
   articles: [
     {
       slug: "our-priorities-in-syrias-peoples-assembly",
@@ -132,11 +161,10 @@ export const siteContent: SiteContent = {
         name: { ar: "سوريا المتجدّدة", en: "Syria in Transition" },
         url: "https://www.syriaintransition.com/ar/home/opinion/our-priorities-in-syria-s-people-s-assembly",
       },
-      coverImage: "/images/articles/kinan-portrait.jpg",
       summary: [
         {
-          ar: "يستعرض النحاس رؤيته لأولويات العمل النيابي في أول مجلس شعب سوري بعد سقوط الأسد، مقسّماً العمل إلى ثلاثة مسارات: إتمام الأسس التأسيسية للمجلس (النظام الداخلي والموازنة)، الشروع بصياغة دستور دائم يحظى بأوسع توافق وطني ممكن، ثم مجموعة أولويات تشريعية عاجلة تشمل العدالة الانتقالية، الإصلاح القضائي، الشأن الاقتصادي، التعليم، والرقابة على مؤسسات الدولة.",
-          en: "Nahhas lays out his view of the new People's Assembly's priorities across three tracks: completing the Assembly's founding groundwork (rules of procedure and budget), beginning work on a permanent constitution built on the broadest possible national consensus, and a set of urgent legislative priorities spanning transitional justice, judicial reform, the economy, education, and oversight of state institutions.",
+          ar: "يستعرض النحاس رؤيته لأولويات العمل النيابي في أول مجلس شعب سوري بعد سقوط الأسد، مقسّماً العمل إلى ثلاثة مسارات رئيسية. المسار الأول تأسيسي بحت: إقرار النظام الداخلي للمجلس واعتماد موازنته الخاصة، وصولاً إلى دراسة الموازنة العامة للدولة لعام 2026. المسار الثاني يتعلق بالدستور الدائم، الذي يرى أن صياغته يجب أن تستغرق عامين على الأقل لضمان أوسع توافق وطني ممكن، عبر لجنة تُشكَّل من عُشر أعضاء المجلس لتمثّل مختلف شرائح المجتمع. أما المسار الثالث فيغطي الأولويات التشريعية العاجلة للأشهر الستة المقبلة: العدالة الانتقالية (تثبيت العزل السياسي وإعادة هيكلة الأجهزة الأمنية)، الإصلاح القضائي (استبدال القضاة الفاسدين وتفعيل الرقابة القضائية)، قانون أحزاب عصري، ملفات اقتصادية تخصّ إعادة الإعمار وحقوق العمال، تحديث التعليم، ورقابة برلمانية على مؤسسات الدولة كالصندوق السيادي وهيئة الاستثمار.",
+          en: "Nahhas lays out his view of the new People's Assembly's priorities across three tracks. The first is purely institutional: adopting the Assembly's rules of procedure and its own budget, then scrutinising the state's 2026 general budget. The second concerns the permanent constitution, which he argues should take at least two years to draft so as to secure the broadest possible national consensus, through a committee drawn from one-tenth of the Assembly's members to represent society's different segments. The third covers urgent legislative priorities for the next six months: transitional justice (political exclusion and restructuring the security services), judicial reform (replacing corrupt judges and activating judicial oversight), a modern political-parties law, economic files tied to reconstruction and labour rights, modernising education, and parliamentary oversight of state bodies such as the Sovereign Fund and the Investment Authority.",
         },
       ],
     },
@@ -155,11 +183,10 @@ export const siteContent: SiteContent = {
         name: { ar: "سوريا المتجدّدة", en: "Syria in Transition" },
         url: "https://www.syriaintransition.com/ar/home/opinion/i-fought-hezbollah-in-homs-seeking-revenge-in-lebanon-is-wrong",
       },
-      coverImage: "/images/articles/kinan-portrait.jpg",
       summary: [
         {
-          ar: "يكتب النحاس من موقع من قاتل قوات حزب الله خلال حصار حمص عام 2013، مستعيداً وطأة تلك المعارك، ليجادل بأن إغراء الانتقام من الحزب داخل لبنان اليوم يحمل مخاطر جدّية على سوريا في مرحلتها الانتقالية الهشة، داعياً إلى الحذر وضبط النفس بدلاً من الانجرار إلى صراع إقليمي أوسع.",
-          en: "Writing as someone who fought Hezbollah during the siege of Homs in 2013, Nahhas revisits the toll of those battles and argues that the temptation to settle scores with Hezbollah inside Lebanon today carries serious risks for Syria's fragile transition, calling for restraint over engagement in a wider regional conflict.",
+          ar: "يكتب النحاس من موقع من قاتل صفوف حزب الله خلال حصار حمص أواخر عام 2013، حين حاصرت قوات النظام والحزب معاً أحياء المدينة بعد سيطرتها على القصير وريف حمص الجنوبي الغربي. يستعيد قسوة تلك المعارك ووطأة مجازر تلك الحقبة، ليخلص إلى أن إغراء الانتقام من حزب الله داخل الأراضي اللبنانية اليوم، رغم مشروعيته العاطفية، يحمل مخاطر جسيمة على سوريا في مرحلتها الانتقالية الهشة: فقد ينزلق البلد إلى صراع إقليمي أوسع من طاقته على تحمّله في هذه المرحلة الحرجة. لذلك يدعو إلى ضبط النفس والتريّث، معتبراً أن أولوية سوريا اليوم هي التعافي الداخلي لا فتح جبهات جديدة.",
+          en: "Writing as someone who fought in the ranks against Hezbollah during the siege of Homs in late 2013 — when regime and Hezbollah forces together besieged the city's neighbourhoods after seizing al-Qusayr and the south-western Homs countryside — Nahhas revisits the brutality of those battles and the era's massacres. He concludes that the temptation to take revenge on Hezbollah inside Lebanon today, however emotionally understandable, carries grave risks for Syria's fragile transition: the country could be pulled into a wider regional conflict it cannot currently afford. He calls instead for restraint, arguing that Syria's priority now is internal recovery, not opening new fronts.",
         },
       ],
     },
@@ -178,11 +205,10 @@ export const siteContent: SiteContent = {
         name: { ar: "سوريا المتجدّدة", en: "Syria in Transition" },
         url: "https://www.syriaintransition.com/ar/home/opinion/germany-s-nuremberg-trials-are-no-blueprint-for-syria",
       },
-      coverImage: "/images/articles/kinan-portrait.jpg",
       summary: [
         {
-          ar: "يناقش النحاس المقارنات الجاهزة التي تُطرح بين تجربة ألمانيا في محاكمات نورمبرغ وملف العدالة الانتقالية في سوريا، مبيّناً أن الواقع الألماني بعد الحرب كان أكثر تعقيداً وعنفاً مما تختزله هذه المقارنات، وداعياً إلى صياغة مسار سوري خاص للعدالة يقوم على سيادة القانون والمساءلة وحقوق الضحايا بدل استعارة نماذج جاهزة.",
-          en: "Nahhas challenges the ready-made comparisons drawn between Germany's Nuremberg trials and Syria's transitional-justice debate, arguing that Germany's post-war reality was far more complex and violent than these comparisons suggest, and calling for Syria to chart its own path to justice grounded in the rule of law, accountability, and victims' rights.",
+          ar: "يناقش النحاس المقارنات الجاهزة التي تُطرح بكثرة في النقاش السوري الدائر حول العدالة الانتقالية، وعلى رأسها استحضار محاكمات نورمبرغ الألمانية كنموذج جاهز يمكن استنساخه. يجادل بأن هذه المقارنة تختزل تجربة ألمانيا إلى رمز مبسّط، بينما كان الواقع الألماني بعد الحرب أكثر تعقيداً وعنفاً بكثير مما تُظهره الصورة الشائعة، إذ استغرقت المساءلة الحقيقية عقوداً وشملت مسارات متعددة ومتضاربة أحياناً. وخلاصته أن سوريا لا تحتاج إلى استعارة نموذج جاهز من تجربة مختلفة تماماً في سياقها التاريخي، بل إلى صياغة مسارها الخاص للعدالة الانتقالية، بحيث يرتكز على سيادة القانون والمساءلة الحقيقية وحقوق الضحايا، بدل الانشغال بمقارنات تاريخية مختزلة قد تُستخدم لتبرير حلول عاجلة وغير كافية.",
+          en: "Nahhas takes aim at the ready-made comparisons that keep surfacing in Syria's transitional-justice debate, chief among them the invocation of Germany's Nuremberg trials as an off-the-shelf model to replicate. He argues the comparison reduces Germany's experience to an oversimplified symbol, when the post-war German reality was in fact far more complex and violent than the popular image suggests — genuine accountability took decades and followed multiple, sometimes conflicting, tracks. His conclusion is that Syria does not need to borrow a ready-made model from an experience wholly different in its historical context, but must chart its own path to transitional justice — one grounded in the rule of law, genuine accountability, and victims' rights, rather than reduced historical comparisons that risk being used to justify quick, inadequate fixes.",
         },
       ],
     },

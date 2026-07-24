@@ -38,12 +38,6 @@ export const article = defineType({
       type: "array",
       of: [{ type: "localeText" }],
     }),
-    defineField({
-      name: "coverImage",
-      title: "Cover image",
-      type: "image",
-      options: { hotspot: true },
-    }),
   ],
   orderings: [
     {

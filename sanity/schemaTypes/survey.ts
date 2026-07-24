@@ -49,9 +49,12 @@ export const surveyResults = defineType({
     defineField({
       name: "counts",
       title: "Counts",
+      description:
+        "Written directly by the /api/survey route. Keys are option IDs " +
+        "(dynamic, so they won't all appear as named fields here) mapped " +
+        "to vote counts.",
       type: "object",
-      // Keys are option IDs written by the /api/survey route.
-      fields: [{ name: "_", title: "—", type: "number" }],
+      fields: [{ name: "placeholder", title: "—", type: "number", hidden: true }],
       options: { collapsed: true },
     }),
   ],

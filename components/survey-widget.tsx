@@ -7,6 +7,23 @@ import { clsx } from "@/lib/clsx";
 
 type Status = "idle" | "voting" | "done" | "error";
 
+function readLocalTally(surveyId: string): Record<string, number> {
+  try {
+    const raw = localStorage.getItem(`survey-tally-${surveyId}`);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeLocalTally(surveyId: string, tally: Record<string, number>) {
+  try {
+    localStorage.setItem(`survey-tally-${surveyId}`, JSON.stringify(tally));
+  } catch {
+    /* ignore */
+  }
+}
+
 export function SurveyWidget({ survey }: { survey: SurveyData }) {
   const t = useTranslations("survey");
   const [selected, setSelected] = useState<string>("");
@@ -29,13 +46,26 @@ export function SurveyWidget({ survey }: { survey: SurveyData }) {
     // deliberately deferred out of render to avoid a hydration mismatch.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setVoted(true);
-    fetch("/api/survey")
+
+    fetch(`/api/survey?surveyId=${encodeURIComponent(survey.id)}`)
       .then((r) => r.json())
       .then((d) => {
-        setTotals(d.totals ?? {});
-        setTotal(d.total ?? 0);
+        if (d.persisted) {
+          setTotals(d.totals ?? {});
+          setTotal(d.total ?? 0);
+        } else {
+          // No durable backend yet: trust our own local tally rather than
+          // the server's ephemeral in-memory count, which can reset.
+          const local = readLocalTally(survey.id);
+          setTotals(local);
+          setTotal(Object.values(local).reduce((s, n) => s + n, 0));
+        }
       })
-      .catch(() => {});
+      .catch(() => {
+        const local = readLocalTally(survey.id);
+        setTotals(local);
+        setTotal(Object.values(local).reduce((s, n) => s + n, 0));
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -47,12 +77,26 @@ export function SurveyWidget({ survey }: { survey: SurveyData }) {
       const res = await fetch("/api/survey", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ optionId: selected }),
+        body: JSON.stringify({ surveyId: survey.id, optionId: selected }),
       });
       if (!res.ok) throw new Error("vote_failed");
       const d = await res.json();
-      setTotals(d.totals ?? {});
-      setTotal(d.total ?? 0);
+
+      let nextTotals: Record<string, number>;
+      let nextTotal: number;
+      if (d.persisted) {
+        nextTotals = d.totals ?? {};
+        nextTotal = d.total ?? 0;
+      } else {
+        const local = readLocalTally(survey.id);
+        local[selected] = (local[selected] ?? 0) + 1;
+        writeLocalTally(survey.id, local);
+        nextTotals = local;
+        nextTotal = Object.values(local).reduce((s, n) => s + n, 0);
+      }
+
+      setTotals(nextTotals);
+      setTotal(nextTotal);
       setVoted(true);
       setStatus("done");
       try {
@@ -117,7 +161,7 @@ export function SurveyWidget({ survey }: { survey: SurveyData }) {
               >
                 <input
                   type="radio"
-                  name="survey"
+                  name={`survey-${survey.id}`}
                   value={opt.id}
                   checked={active}
                   onChange={() => setSelected(opt.id)}

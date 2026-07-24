@@ -3,6 +3,7 @@ import { getSiteData } from "@/lib/site-data";
 import type { Locale } from "@/lib/content";
 import { Container } from "./container";
 import { Reveal } from "./reveal";
+import { FacebookIcon, XIcon } from "./icons";
 
 export async function HomeAbout() {
   const locale = (await getLocale()) as Locale;
@@ -22,22 +23,24 @@ export async function HomeAbout() {
             ))}
           </div>
 
-          <div className="mt-8 flex gap-4">
+          <div className="mt-8 flex gap-3">
             <a
               href={data.socials.facebook}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-semibold text-accent hover:underline"
+              aria-label={t("followFacebook")}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink-secondary transition-colors hover:border-accent hover:text-accent"
             >
-              {t("followFacebook")}
+              <FacebookIcon className="h-[18px] w-[18px]" />
             </a>
             <a
               href={data.socials.x}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-semibold text-accent hover:underline"
+              aria-label={t("followX")}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink-secondary transition-colors hover:border-accent hover:text-accent"
             >
-              {t("followX")}
+              <XIcon className="h-[17px] w-[17px]" />
             </a>
           </div>
         </Reveal>

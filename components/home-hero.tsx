@@ -41,7 +41,7 @@ export async function HomeHero() {
               width={112}
               height={112}
               priority
-              className="mb-7 h-28 w-28 rounded-full object-cover shadow-[var(--shadow-card)]"
+              className="mb-7 h-28 w-28 rounded-full object-cover shadow-[var(--shadow-card)] grayscale contrast-125"
             />
           ) : (
             <div

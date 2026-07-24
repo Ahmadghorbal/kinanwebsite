@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getArticle, getArticleSlugs } from "@/lib/site-data";
+import { getArticle, getArticleSlugs, getNextArticle } from "@/lib/site-data";
 import type { Locale } from "@/lib/content";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format";
@@ -41,7 +40,6 @@ export async function generateMetadata({
       description: article.dek,
       publishedTime: article.publishedAt,
       url: `/${locale}${path}`,
-      ...(article.coverImage ? { images: [article.coverImage] } : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -62,6 +60,7 @@ export default async function ArticlePage({
   if (!article) notFound();
 
   const t = await getTranslations("articles");
+  const nextArticle = await getNextArticle(slug, locale as Locale);
 
   return (
     <article className="mx-auto w-full max-w-[44rem] px-5 py-14 sm:px-6 sm:py-20">
@@ -83,19 +82,6 @@ export default async function ArticlePage({
         <span aria-hidden>{locale === "ar" ? "→" : "←"}</span>
         {t("backToArticles")}
       </Link>
-
-      {article.coverImage && (
-        <div className="relative mt-6 aspect-[4/3] w-full max-w-[220px] overflow-hidden rounded-2xl shadow-[var(--shadow-card)] sm:max-w-[260px]">
-          <Image
-            src={article.coverImage}
-            alt={article.title}
-            fill
-            sizes="260px"
-            className="object-cover"
-            priority
-          />
-        </div>
-      )}
 
       <header className="mt-6">
         <time
@@ -121,8 +107,10 @@ export default async function ArticlePage({
       </div>
 
       {article.source?.url && (
-        <div className="mt-8 rounded-2xl border border-line bg-surface-2 p-6">
-          <p className="text-sm text-ink-secondary">{t("sourcePrefix")}</p>
+        <div className="mt-8 rounded-2xl border-2 border-accent/30 bg-surface-2 p-6">
+          <p className="text-sm font-semibold text-ink">
+            {t("sourcePrefix")}
+          </p>
           <a
             href={article.source.url}
             target="_blank"
@@ -132,6 +120,34 @@ export default async function ArticlePage({
             {t("readFullArticle")} — {article.source.name}
             <span aria-hidden>{locale === "ar" ? "←" : "→"}</span>
           </a>
+        </div>
+      )}
+
+      {nextArticle && (
+        <div className="mt-12 border-t border-line pt-8">
+          <p className="eyebrow">{t("nextArticle")}</p>
+          <Link
+            href={`/articles/${nextArticle.slug}`}
+            className="group mt-3 flex items-center justify-between gap-4 rounded-2xl border border-line p-5 transition-colors hover:border-accent"
+          >
+            <div>
+              <time
+                dateTime={nextArticle.publishedAt}
+                className="text-xs text-ink-tertiary"
+              >
+                {formatDate(nextArticle.publishedAt, locale)}
+              </time>
+              <h3 className="mt-1 text-lg font-semibold text-ink transition-colors group-hover:text-accent">
+                {nextArticle.title}
+              </h3>
+            </div>
+            <span
+              aria-hidden
+              className="shrink-0 text-xl text-accent transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
+            >
+              {locale === "ar" ? "←" : "→"}
+            </span>
+          </Link>
         </div>
       )}
     </article>

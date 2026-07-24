@@ -49,6 +49,13 @@ npm run studio          # local Studio at http://localhost:3333
 After seeding, edits in Studio appear on the site. Contact submissions and survey votes
 are written to Sanity via the API routes using the write token.
 
+**Important:** until `SANITY_API_WRITE_TOKEN` is set, the survey API reports
+`persisted: false` and the site keeps vote counts in the visitor's own browser
+(localStorage) instead — this is deliberate. A project ID alone lets anonymous
+*reads* succeed against Sanity (returning empty data), which would otherwise look
+like "real, empty results" even though nothing was actually saved. Add the write
+token to switch survey (and contact) storage over to Sanity for real.
+
 ---
 
 ## 2. GitHub

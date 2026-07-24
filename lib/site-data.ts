@@ -8,7 +8,7 @@ import {
   articlesQuery,
   articleBySlugQuery,
   articleSlugsQuery,
-  surveyQuery,
+  surveysQuery,
   interviewsQuery,
 } from "@/sanity/lib/queries";
 
@@ -28,7 +28,6 @@ export interface ArticleSummary {
   dek: string;
   publishedAt: string;
   source: { name: string; url: string };
-  coverImage?: string;
 }
 
 export interface ArticleFull extends ArticleSummary {
@@ -76,7 +75,6 @@ function fallbackArticles(locale: Locale): ArticleSummary[] {
     dek: a.dek[locale],
     publishedAt: a.publishedAt,
     source: { name: a.source.name[locale], url: a.source.url },
-    coverImage: a.coverImage,
   }));
 }
 
@@ -89,18 +87,16 @@ function fallbackArticle(slug: string, locale: Locale): ArticleFull | null {
     dek: a.dek[locale],
     publishedAt: a.publishedAt,
     source: { name: a.source.name[locale], url: a.source.url },
-    coverImage: a.coverImage,
     summary: a.summary.map((p) => p[locale]),
   };
 }
 
-function fallbackSurvey(locale: Locale): SurveyData {
-  const s = siteContent.survey;
-  return {
+function fallbackSurveys(locale: Locale): SurveyData[] {
+  return siteContent.surveys.map((s) => ({
     id: s.id,
     question: s.question[locale],
     options: s.options.map((o) => ({ id: o.id, label: o.label[locale] })),
-  };
+  }));
 }
 
 function fallbackInterviews(locale: Locale): InterviewData[] {
@@ -151,7 +147,6 @@ export const getArticles = cache(
           name: pick((a.source as Record<string, unknown>)?.name, locale),
           url: String((a.source as Record<string, unknown>)?.url ?? ""),
         },
-        coverImage: (a.coverImage as string | undefined) ?? undefined,
       }));
     } catch {
       return fallbackArticles(locale);
@@ -176,7 +171,6 @@ export const getArticle = cache(
           name: pick(a.source?.name, locale),
           url: String(a.source?.url ?? ""),
         },
-        coverImage: a.coverImage ?? undefined,
         summary: Array.isArray(summary)
           ? summary
           : fallbackArticle(slug, locale)?.summary ?? [],
@@ -199,25 +193,40 @@ export const getArticleSlugs = cache(async (): Promise<string[]> => {
   }
 });
 
-export const getSurvey = cache(async (locale: Locale): Promise<SurveyData> => {
-  if (!isSanityConfigured) return fallbackSurvey(locale);
-  try {
-    const s = await client.fetch(surveyQuery);
-    if (!s) return fallbackSurvey(locale);
-    return {
-      id: String(s.id ?? siteContent.survey.id),
-      question: pick(s.question, locale),
-      options: Array.isArray(s.options)
-        ? s.options.map((o: { id?: string; label: unknown }, i: number) => ({
-            id: String(o.id ?? i),
-            label: pick(o.label, locale),
-          }))
-        : fallbackSurvey(locale).options,
-    };
-  } catch {
-    return fallbackSurvey(locale);
-  }
-});
+/** The article that follows `slug` in the (newest-first) list, wrapping to the first. */
+export async function getNextArticle(
+  slug: string,
+  locale: Locale,
+): Promise<ArticleSummary | null> {
+  const all = await getArticles(locale);
+  if (all.length < 2) return null;
+  const i = all.findIndex((a) => a.slug === slug);
+  if (i === -1) return null;
+  return all[(i + 1) % all.length];
+}
+
+export const getSurveys = cache(
+  async (locale: Locale): Promise<SurveyData[]> => {
+    if (!isSanityConfigured) return fallbackSurveys(locale);
+    try {
+      const docs = await client.fetch(surveysQuery);
+      if (!Array.isArray(docs) || docs.length === 0)
+        return fallbackSurveys(locale);
+      return docs.map((s: Record<string, unknown>, i: number) => ({
+        id: String(s.id ?? i),
+        question: pick(s.question, locale),
+        options: Array.isArray(s.options)
+          ? s.options.map((o: { id?: string; label: unknown }, j: number) => ({
+              id: String(o.id ?? j),
+              label: pick(o.label, locale),
+            }))
+          : [],
+      }));
+    } catch {
+      return fallbackSurveys(locale);
+    }
+  },
+);
 
 export const getInterviews = cache(
   async (locale: Locale): Promise<InterviewData[]> => {
