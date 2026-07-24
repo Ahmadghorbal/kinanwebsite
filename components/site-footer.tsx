@@ -17,6 +17,7 @@ export async function SiteFooter() {
         <div>
           <p className="text-[17px] font-bold text-ink">{data.name}</p>
           <p className="mt-1 text-sm text-ink-secondary">{t("role")}</p>
+          <p className="mt-1 text-xs font-medium text-accent">{t("official")}</p>
         </div>
 
         <nav className="flex flex-col gap-2.5" aria-label={t("nav")}>
@@ -29,9 +30,12 @@ export async function SiteFooter() {
           <Link href="/articles" className="text-sm text-ink-secondary transition-colors hover:text-ink">
             {nav("articles")}
           </Link>
-          <a href={`/${locale}#survey`} className="text-sm text-ink-secondary transition-colors hover:text-ink">
-            {nav("survey")}
+          <a href={`/${locale}#interviews`} className="text-sm text-ink-secondary transition-colors hover:text-ink">
+            {nav("interviews")}
           </a>
+          <Link href="/survey" className="text-sm text-ink-secondary transition-colors hover:text-ink">
+            {nav("survey")}
+          </Link>
           <a href={`/${locale}#contact`} className="text-sm text-ink-secondary transition-colors hover:text-ink">
             {nav("contact")}
           </a>

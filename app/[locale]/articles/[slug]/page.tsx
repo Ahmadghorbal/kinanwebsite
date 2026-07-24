@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getArticle, getArticleSlugs } from "@/lib/site-data";
 import type { Locale } from "@/lib/content";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format";
-import { ArticleBody } from "@/components/article-body";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/json-ld";
 import { siteUrl } from "@/lib/seo";
 
@@ -41,6 +41,7 @@ export async function generateMetadata({
       description: article.dek,
       publishedTime: article.publishedAt,
       url: `/${locale}${path}`,
+      ...(article.coverImage ? { images: [article.coverImage] } : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -83,6 +84,19 @@ export default async function ArticlePage({
         {t("backToArticles")}
       </Link>
 
+      {article.coverImage && (
+        <div className="relative mt-6 aspect-[4/3] w-full max-w-[220px] overflow-hidden rounded-2xl shadow-[var(--shadow-card)] sm:max-w-[260px]">
+          <Image
+            src={article.coverImage}
+            alt={article.title}
+            fill
+            sizes="260px"
+            className="object-cover"
+            priority
+          />
+        </div>
+      )}
+
       <header className="mt-6">
         <time
           dateTime={article.publishedAt}
@@ -100,21 +114,25 @@ export default async function ArticlePage({
 
       <hr className="my-8 border-line" />
 
-      <ArticleBody value={article.body} />
+      <div className="prose">
+        {article.summary.map((para, i) => (
+          <p key={i}>{para}</p>
+        ))}
+      </div>
 
       {article.source?.url && (
-        <p className="mt-12 border-t border-line pt-6 text-sm text-ink-tertiary">
-          {t("sourcePrefix")}{" "}
+        <div className="mt-8 rounded-2xl border border-line bg-surface-2 p-6">
+          <p className="text-sm text-ink-secondary">{t("sourcePrefix")}</p>
           <a
             href={article.source.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-medium text-accent hover:underline"
+            className="btn btn-primary mt-3"
           >
-            {article.source.name}
+            {t("readFullArticle")} — {article.source.name}
+            <span aria-hidden>{locale === "ar" ? "←" : "→"}</span>
           </a>
-          .
-        </p>
+        </div>
       )}
     </article>
   );

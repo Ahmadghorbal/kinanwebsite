@@ -23,13 +23,21 @@ export const article = defineType({
     defineField({
       name: "source",
       title: "Original source",
+      description: "Where this piece was first published — always credited on the site.",
       type: "object",
       fields: [
         { name: "name", title: "Publication name", type: "localeString" },
         { name: "url", title: "URL", type: "url" },
       ],
     }),
-    defineField({ name: "body", title: "Body", type: "localeBlock" }),
+    defineField({
+      name: "summary",
+      title: "Summary (not the full text)",
+      description:
+        "A short original summary of the piece — link to the source for the full article rather than pasting it in.",
+      type: "array",
+      of: [{ type: "localeText" }],
+    }),
     defineField({
       name: "coverImage",
       title: "Cover image",

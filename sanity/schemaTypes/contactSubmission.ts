@@ -13,7 +13,7 @@ export const contactSubmission = defineType({
       options: {
         list: [
           { title: "Communication", value: "communication" },
-          { title: "Compliment", value: "compliment" },
+          { title: "Complaint", value: "complaint" },
         ],
       },
     }),

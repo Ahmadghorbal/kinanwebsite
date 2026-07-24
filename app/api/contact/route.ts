@@ -3,7 +3,7 @@ import { isSanityConfigured } from "@/sanity/env";
 import { writeClient } from "@/sanity/lib/client";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TYPES = ["communication", "compliment"] as const;
+const TYPES = ["communication", "complaint"] as const;
 
 export async function POST(request: Request) {
   let payload: Record<string, unknown>;

@@ -8,6 +8,7 @@
   "nav": {
     "about": "About",
     "articles": "Articles",
+    "interviews": "Interviews",
     "survey": "Survey",
     "contact": "Contact",
     "menu": "Menu",
@@ -26,6 +27,7 @@
     "switchToEnglish": "العربية"
   },
   "hero": {
+    "official": "Official website",
     "role": "Member of Syria's People's Assembly for the city of Homs",
     "tagline": "A voice from Homs in the first People's Assembly after the fall of Assad — working for genuine transitional justice, a permanent constitution that represents all Syrians, and institutions that serve the citizen.",
     "readBio": "Read the bio",
@@ -33,9 +35,6 @@
   },
   "about": {
     "heading": "About",
-    "districtLabel": "Electoral district",
-    "roleLabel": "Role",
-    "filesLabel": "Key priorities",
     "followFacebook": "Facebook",
     "followX": "X (Twitter)"
   },
@@ -43,15 +42,23 @@
     "heading": "Articles",
     "subtitle": "Articles and opinion pieces by Kinan al-Nahhas.",
     "latestHeading": "Latest articles",
-    "readMore": "Read article",
+    "readMore": "Read more",
+    "readFullArticle": "Read the full article",
     "backToArticles": "Back to articles",
     "publishedOn": "Published",
-    "sourcePrefix": "This article was first published in",
+    "sourcePrefix": "This piece was originally published in Syria in Transition. Read it in full:",
     "empty": "No articles published yet."
+  },
+  "interviews": {
+    "heading": "Interviews",
+    "subtitle": "Video interviews and conversations."
   },
   "survey": {
     "heading": "Survey",
     "subtitle": "Share your view: which priority should the People's Assembly take up next?",
+    "bannerTitle": "Share your view",
+    "bannerBody": "Which priority should the People's Assembly take up next? Take the survey and see the results.",
+    "bannerCta": "Take the survey",
     "vote": "Vote now",
     "voting": "Submitting…",
     "resultsHeading": "Survey results",
@@ -63,10 +70,10 @@
   },
   "contact": {
     "heading": "Contact",
-    "subtitle": "Have a general message or a word of appreciation? Choose the message type and fill in the form.",
+    "subtitle": "Have a general message or a complaint you'd like to raise? Choose the message type and fill in the form.",
     "typeLegend": "Message type",
     "typeCommunication": "Communication",
-    "typeCompliment": "Compliment",
+    "typeComplaint": "Complaint",
     "name": "Full name",
     "email": "Email address",
     "phone": "Phone number (optional)",
@@ -81,6 +88,7 @@
   "footer": {
     "rights": "All rights reserved",
     "role": "Member of Parliament for the city of Homs",
+    "official": "The official website of Kinan al-Nahhas",
     "nav": "Links",
     "follow": "Follow"
   },

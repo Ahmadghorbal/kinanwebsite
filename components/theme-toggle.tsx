@@ -11,17 +11,19 @@ export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const attr = document.documentElement.getAttribute("data-theme");
-    if (attr === "dark" || attr === "light") {
-      setTheme(attr);
-    } else {
-      setTheme(
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light",
-      );
-    }
+    // One-time read of external state (DOM attribute / matchMedia) right after
+    // mount, deliberately deferred out of render to avoid a hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
+
+    const attr = document.documentElement.getAttribute("data-theme");
+    const resolved: Theme =
+      attr === "dark" || attr === "light"
+        ? attr
+        : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+    setTheme(resolved);
   }, []);
 
   function toggle() {

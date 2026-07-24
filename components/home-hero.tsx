@@ -56,6 +56,11 @@ export async function HomeHero() {
             </div>
           )}
 
+          <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-xs font-semibold text-ink-secondary">
+            <VerifiedIcon />
+            {t("official")}
+          </span>
+
           <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-6xl">
             {data.name}
           </h1>
@@ -77,5 +82,23 @@ export async function HomeHero() {
         </Reveal>
       </Container>
     </section>
+  );
+}
+
+function VerifiedIcon() {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--accent)"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
   );
 }

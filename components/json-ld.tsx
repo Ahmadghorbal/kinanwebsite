@@ -65,6 +65,7 @@ export async function ArticleJsonLd({
         author: { "@type": "Person", name: data.name },
         mainEntityOfPage: `${siteUrl}/${locale}/articles/${article.slug}`,
         isBasedOn: article.source?.url || undefined,
+        ...(article.coverImage ? { image: article.coverImage } : {}),
       }}
     />
   );

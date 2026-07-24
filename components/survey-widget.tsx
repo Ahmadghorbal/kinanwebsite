@@ -23,16 +23,19 @@ export function SurveyWidget({ survey }: { survey: SurveyData }) {
     } catch {
       /* ignore */
     }
-    if (didVote) {
-      setVoted(true);
-      fetch("/api/survey")
-        .then((r) => r.json())
-        .then((d) => {
-          setTotals(d.totals ?? {});
-          setTotal(d.total ?? 0);
-        })
-        .catch(() => {});
-    }
+    if (!didVote) return;
+
+    // One-time read of external state (localStorage) right after mount,
+    // deliberately deferred out of render to avoid a hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setVoted(true);
+    fetch("/api/survey")
+      .then((r) => r.json())
+      .then((d) => {
+        setTotals(d.totals ?? {});
+        setTotal(d.total ?? 0);
+      })
+      .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

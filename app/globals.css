@@ -1,25 +1,28 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ *
- * Design tokens — an "Apple-system" translation.
+ * Design tokens — Apple-system layout language, colored with the official
+ * new Syrian visual identity palette (syrian.zone/syid): Forest (accent),
+ * Golden Wheat (warm neutrals), Charcoal (ink/dark mode), Deep Umber
+ * (reserved, unused for now to keep the palette restrained).
  * Light values on :root; dark values follow the OS unless the user has
  * explicitly forced a theme via [data-theme] (set by the theme toggle).
  * ------------------------------------------------------------------ */
 :root {
-  --background: #fbfbfd;
+  --background: #fdfcfa;
   --surface: #ffffff;
-  --surface-2: #f5f5f7;
-  --ink: #1d1d1f;
-  --ink-secondary: #6e6e73;
-  --ink-tertiary: #86868b;
-  --line: #d2d2d7;
-  --line-soft: rgba(0, 0, 0, 0.08);
-  --accent: #157a5b;
-  --accent-hover: #0f5f47;
+  --surface-2: #f2efe6;
+  --ink: #161616;
+  --ink-secondary: #55524c;
+  --ink-tertiary: #83796a;
+  --line: #e3ddd0;
+  --line-soft: rgba(22, 22, 22, 0.08);
+  --accent: #428177;
+  --accent-hover: #054239;
   --accent-contrast: #ffffff;
-  --nav-bg: rgba(251, 251, 253, 0.72);
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
-  --shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.06), 0 16px 40px rgba(0, 0, 0, 0.1);
+  --nav-bg: rgba(253, 252, 250, 0.72);
+  --shadow-card: 0 1px 2px rgba(22, 22, 22, 0.04), 0 8px 24px rgba(22, 22, 22, 0.06);
+  --shadow-hover: 0 2px 6px rgba(22, 22, 22, 0.06), 0 16px 40px rgba(22, 22, 22, 0.1);
 
   --radius-sm: 10px;
   --radius: 18px;
@@ -32,36 +35,36 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --background: #000000;
-    --surface: #1d1d1f;
-    --surface-2: #161617;
-    --ink: #f5f5f7;
-    --ink-secondary: #a1a1a6;
-    --ink-tertiary: #86868b;
-    --line: #3a3a3c;
-    --line-soft: rgba(255, 255, 255, 0.1);
-    --accent: #2fb489;
-    --accent-hover: #43c99d;
-    --accent-contrast: #04120d;
-    --nav-bg: rgba(0, 0, 0, 0.68);
+    --background: #161616;
+    --surface: #211f1c;
+    --surface-2: #1a1917;
+    --ink: #f2efe6;
+    --ink-secondary: #c2b696;
+    --ink-tertiary: #988561;
+    --line: #3d3a34;
+    --line-soft: rgba(242, 239, 230, 0.1);
+    --accent: #5fa392;
+    --accent-hover: #7ab8a8;
+    --accent-contrast: #08120f;
+    --nav-bg: rgba(22, 22, 22, 0.7);
     --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
     --shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.4), 0 18px 44px rgba(0, 0, 0, 0.6);
   }
 }
 
 :root[data-theme="dark"] {
-  --background: #000000;
-  --surface: #1d1d1f;
-  --surface-2: #161617;
-  --ink: #f5f5f7;
-  --ink-secondary: #a1a1a6;
-  --ink-tertiary: #86868b;
-  --line: #3a3a3c;
-  --line-soft: rgba(255, 255, 255, 0.1);
-  --accent: #2fb489;
-  --accent-hover: #43c99d;
-  --accent-contrast: #04120d;
-  --nav-bg: rgba(0, 0, 0, 0.68);
+  --background: #161616;
+  --surface: #211f1c;
+  --surface-2: #1a1917;
+  --ink: #f2efe6;
+  --ink-secondary: #c2b696;
+  --ink-tertiary: #988561;
+  --line: #3d3a34;
+  --line-soft: rgba(242, 239, 230, 0.1);
+  --accent: #5fa392;
+  --accent-hover: #7ab8a8;
+  --accent-contrast: #08120f;
+  --nav-bg: rgba(22, 22, 22, 0.7);
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
   --shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.4), 0 18px 44px rgba(0, 0, 0, 0.6);
 }

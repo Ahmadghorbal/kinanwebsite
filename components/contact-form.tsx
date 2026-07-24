@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { clsx } from "@/lib/clsx";
 
 type Status = "idle" | "sending" | "success" | "error";
-type MessageType = "communication" | "compliment";
+type MessageType = "communication" | "complaint";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -66,7 +66,7 @@ export function ContactForm() {
     );
   }
 
-  const types: MessageType[] = ["communication", "compliment"];
+  const types: MessageType[] = ["communication", "complaint"];
 
   return (
     <form onSubmit={submit} noValidate className="card p-6 sm:p-8">
@@ -89,7 +89,7 @@ export function ContactForm() {
             >
               {val === "communication"
                 ? t("typeCommunication")
-                : t("typeCompliment")}
+                : t("typeComplaint")}
             </button>
           ))}
         </div>

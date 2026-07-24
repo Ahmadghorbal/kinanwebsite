@@ -6,7 +6,6 @@
  */
 import { getCliClient } from "sanity/cli";
 import { siteContent } from "../lib/content";
-import { blocksToPortableText } from "../lib/portable";
 
 const client = getCliClient();
 
@@ -39,11 +38,6 @@ async function run() {
       ar: p.ar,
       en: p.en,
     })),
-    facts: siteContent.facts.map((f) => ({
-      _key: key(),
-      label: lstr(f.label),
-      value: lstr(f.value),
-    })),
     socials: siteContent.socials,
     contactEmail: siteContent.contactEmail,
   });
@@ -57,11 +51,12 @@ async function run() {
       dek: ltext(a.dek),
       publishedAt: new Date(a.publishedAt).toISOString(),
       source: { name: lstr(a.source.name), url: a.source.url },
-      body: {
-        _type: "localeBlock",
-        ar: blocksToPortableText(a.body, "ar"),
-        en: blocksToPortableText(a.body, "en"),
-      },
+      summary: a.summary.map((p) => ({
+        _key: key(),
+        _type: "localeText",
+        ar: p.ar,
+        en: p.en,
+      })),
     });
   }
 
@@ -78,10 +73,23 @@ async function run() {
     isActive: true,
   });
 
+  for (const i of siteContent.interviews) {
+    docs.push({
+      _id: `interview-${i.id}`,
+      _type: "interview",
+      title: lstr(i.title),
+      youtubeId: i.youtubeId,
+      publishedAt: new Date(i.publishedAt).toISOString(),
+    });
+  }
+
   const tx = client.transaction();
   for (const d of docs) tx.createOrReplace(d);
   await tx.commit();
   console.log(`Seeded ${docs.length} documents into Sanity.`);
+  console.log(
+    "Note: article cover images aren't seeded automatically — upload them in Studio (they live in public/images/articles/ for the site's own fallback rendering).",
+  );
 }
 
 run().catch((err) => {

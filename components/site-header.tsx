@@ -23,7 +23,7 @@ export function SiteHeader() {
 
   const sectionLinks = [
     { href: `/${locale}#about`, label: nav("about") },
-    { href: `/${locale}#survey`, label: nav("survey") },
+    { href: `/${locale}#interviews`, label: nav("interviews") },
     { href: `/${locale}#contact`, label: nav("contact") },
   ];
 
@@ -59,6 +59,12 @@ export function SiteHeader() {
             className="text-[14px] font-medium text-ink-secondary transition-colors hover:text-ink"
           >
             {nav("articles")}
+          </Link>
+          <Link
+            href="/survey"
+            className="text-[14px] font-medium text-ink-secondary transition-colors hover:text-ink"
+          >
+            {nav("survey")}
           </Link>
         </nav>
 
@@ -99,6 +105,13 @@ export function SiteHeader() {
               className="rounded-lg px-2 py-2.5 text-[15px] font-medium text-ink-secondary transition-colors hover:bg-surface-2 hover:text-ink"
             >
               {nav("articles")}
+            </Link>
+            <Link
+              href="/survey"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-2 py-2.5 text-[15px] font-medium text-ink-secondary transition-colors hover:bg-surface-2 hover:text-ink"
+            >
+              {nav("survey")}
             </Link>
             <div className="mt-2 sm:hidden">
               <LanguageSwitcher />

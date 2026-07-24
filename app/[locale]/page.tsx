@@ -2,7 +2,8 @@ import { setRequestLocale } from "next-intl/server";
 import { HomeHero } from "@/components/home-hero";
 import { HomeAbout } from "@/components/home-about";
 import { HomeArticles } from "@/components/home-articles";
-import { HomeSurvey } from "@/components/home-survey";
+import { HomeInterviews } from "@/components/home-interviews";
+import { SurveyBanner } from "@/components/survey-banner";
 import { HomeContact } from "@/components/home-contact";
 import { PersonJsonLd } from "@/components/json-ld";
 
@@ -20,7 +21,8 @@ export default async function HomePage({
       <HomeHero />
       <HomeAbout />
       <HomeArticles />
-      <HomeSurvey />
+      <HomeInterviews />
+      <SurveyBanner />
       <HomeContact />
     </>
   );

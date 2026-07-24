@@ -1,7 +1,6 @@
 import "server-only";
 import { cache } from "react";
 import { siteContent, type Locale } from "./content";
-import { blocksToPortableText, type PtBlock } from "./portable";
 import { isSanityConfigured } from "@/sanity/env";
 import { client } from "@/sanity/lib/client";
 import {
@@ -10,6 +9,7 @@ import {
   articleBySlugQuery,
   articleSlugsQuery,
   surveyQuery,
+  interviewsQuery,
 } from "@/sanity/lib/queries";
 
 export interface SiteData {
@@ -17,7 +17,6 @@ export interface SiteData {
   role: string;
   tagline: string;
   bio: string[];
-  facts: { label: string; value: string }[];
   socials: { facebook: string; x: string };
   contactEmail: string;
   photo?: string;
@@ -29,16 +28,24 @@ export interface ArticleSummary {
   dek: string;
   publishedAt: string;
   source: { name: string; url: string };
+  coverImage?: string;
 }
 
 export interface ArticleFull extends ArticleSummary {
-  body: PtBlock[] | unknown[];
+  summary: string[];
 }
 
 export interface SurveyData {
   id: string;
   question: string;
   options: { id: string; label: string }[];
+}
+
+export interface InterviewData {
+  id: string;
+  title: string;
+  youtubeId: string;
+  publishedAt: string;
 }
 
 /** Pick a localized value from either a {ar,en} object or a plain string. */
@@ -56,12 +63,9 @@ function fallbackSiteData(locale: Locale): SiteData {
     role: siteContent.role[locale],
     tagline: siteContent.tagline[locale],
     bio: siteContent.bio.map((p) => p[locale]),
-    facts: siteContent.facts.map((f) => ({
-      label: f.label[locale],
-      value: f.value[locale],
-    })),
     socials: siteContent.socials,
     contactEmail: siteContent.contactEmail,
+    photo: siteContent.photo,
   };
 }
 
@@ -72,6 +76,7 @@ function fallbackArticles(locale: Locale): ArticleSummary[] {
     dek: a.dek[locale],
     publishedAt: a.publishedAt,
     source: { name: a.source.name[locale], url: a.source.url },
+    coverImage: a.coverImage,
   }));
 }
 
@@ -84,7 +89,8 @@ function fallbackArticle(slug: string, locale: Locale): ArticleFull | null {
     dek: a.dek[locale],
     publishedAt: a.publishedAt,
     source: { name: a.source.name[locale], url: a.source.url },
-    body: blocksToPortableText(a.body, locale),
+    coverImage: a.coverImage,
+    summary: a.summary.map((p) => p[locale]),
   };
 }
 
@@ -95,6 +101,15 @@ function fallbackSurvey(locale: Locale): SurveyData {
     question: s.question[locale],
     options: s.options.map((o) => ({ id: o.id, label: o.label[locale] })),
   };
+}
+
+function fallbackInterviews(locale: Locale): InterviewData[] {
+  return siteContent.interviews.map((i) => ({
+    id: i.id,
+    title: i.title[locale],
+    youtubeId: i.youtubeId,
+    publishedAt: i.publishedAt,
+  }));
 }
 
 // ----- Public façade: Sanity when configured, fallback otherwise -----------
@@ -111,15 +126,9 @@ export const getSiteData = cache(async (locale: Locale): Promise<SiteData> => {
       bio: Array.isArray(doc.bio)
         ? doc.bio.map((p: unknown) => pick(p, locale))
         : fb.bio,
-      facts: Array.isArray(doc.facts)
-        ? doc.facts.map((f: { label: unknown; value: unknown }) => ({
-            label: pick(f.label, locale),
-            value: pick(f.value, locale),
-          }))
-        : fb.facts,
       socials: doc.socials ?? fb.socials,
       contactEmail: doc.contactEmail ?? fb.contactEmail,
-      photo: doc.photo ?? undefined,
+      photo: doc.photo ?? fb.photo,
     };
   } catch {
     return fallbackSiteData(locale);
@@ -142,6 +151,7 @@ export const getArticles = cache(
           name: pick((a.source as Record<string, unknown>)?.name, locale),
           url: String((a.source as Record<string, unknown>)?.url ?? ""),
         },
+        coverImage: (a.coverImage as string | undefined) ?? undefined,
       }));
     } catch {
       return fallbackArticles(locale);
@@ -155,7 +165,8 @@ export const getArticle = cache(
     try {
       const a = await client.fetch(articleBySlugQuery, { slug });
       if (!a) return fallbackArticle(slug, locale);
-      const body = a.body && typeof a.body === "object" ? a.body[locale] : a.body;
+      const summary =
+        a.summary && typeof a.summary === "object" ? a.summary[locale] : null;
       return {
         slug: String(a.slug ?? slug),
         title: pick(a.title, locale),
@@ -165,7 +176,10 @@ export const getArticle = cache(
           name: pick(a.source?.name, locale),
           url: String(a.source?.url ?? ""),
         },
-        body: Array.isArray(body) ? body : [],
+        coverImage: a.coverImage ?? undefined,
+        summary: Array.isArray(summary)
+          ? summary
+          : fallbackArticle(slug, locale)?.summary ?? [],
       };
     } catch {
       return fallbackArticle(slug, locale);
@@ -204,3 +218,22 @@ export const getSurvey = cache(async (locale: Locale): Promise<SurveyData> => {
     return fallbackSurvey(locale);
   }
 });
+
+export const getInterviews = cache(
+  async (locale: Locale): Promise<InterviewData[]> => {
+    if (!isSanityConfigured) return fallbackInterviews(locale);
+    try {
+      const docs = await client.fetch(interviewsQuery);
+      if (!Array.isArray(docs) || docs.length === 0)
+        return fallbackInterviews(locale);
+      return docs.map((i: Record<string, unknown>) => ({
+        id: String(i.youtubeId ?? i._id ?? ""),
+        title: pick(i.title, locale),
+        youtubeId: String(i.youtubeId ?? ""),
+        publishedAt: String(i.publishedAt ?? ""),
+      }));
+    } catch {
+      return fallbackInterviews(locale);
+    }
+  },
+);
